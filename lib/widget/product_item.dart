@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:state_management/models/product.dart';
+import 'package:state_management/providers/cart_provider.dart';
 import '../page/product_detail_screen.dart';
 
 class ProductItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final productData = Provider.of<Product>(context, listen: false);
+    final cartData = Provider.of<CartProvider>(context, listen: false);
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
       child: GridTile(
@@ -43,7 +45,14 @@ class ProductItem extends StatelessWidget {
             icon: Icon(
               Icons.shopping_cart,
             ),
-            onPressed: () {},
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text("Berhasil Di Tambahkan"),
+                duration: Duration(milliseconds: 500),
+              ));
+              cartData.addCart(
+                  productData.id, productData.title, productData.price);
+            },
             color: Theme.of(context).accentColor,
           ),
         ),
